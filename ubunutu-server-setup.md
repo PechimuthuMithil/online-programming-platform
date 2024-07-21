@@ -8,7 +8,7 @@ All the servers inside a NAT Netwrk to enable communication within them, and the
 ### Enable SSH service
 I use the SSH service to login into the server terminals from my host machine so I can copy, cut and paste commands. 
 
-1. Open the VM and setup the ssh service by doing the following.
+1. Open the VM and setup the ssh service by doing the following.  
 `sudo apt-get update`  
 `sudo apt-get install -y openssh-server`  
 `sudo systemctl enable ssh`  
@@ -25,7 +25,7 @@ I use the SSH service to login into the server terminals from my host machine so
 | ssh-server-3 | 127.0.0.2  | 1113      | 10.0.2.6 | 22         |  
 
 ### Disable Swap
-1. Stop and disable the ufw service.
+1. Stop and disable the ufw service.  
 `sudo systemctl stop ufw`  
 `sudo systemctl disable ufw`
 
