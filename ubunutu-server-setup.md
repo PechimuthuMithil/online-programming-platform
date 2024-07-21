@@ -51,4 +51,6 @@ Kubernetes is not included in the default repositories. To add them, enter the f
 `sudo at-get update`  
 `sudo apt-get install -y kubelet kubeadm kubectl`  
 `sudo apt-mark hold kubelet kubeadm kubectl`    
+`sudo systemctl enable --now kubelet`  
 
+These have been take from: `https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/` where it is clearly written that legacy package repositories `apt.kubernetes.io` have been deprecated. 
