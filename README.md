@@ -37,4 +37,4 @@ Currently we are building the platform to run on the terminal. Once the terminal
 ## Features
 
 ## Contributing
-
+At the end of every day, changed from the work branch will be cherry picked and merged with the master.
