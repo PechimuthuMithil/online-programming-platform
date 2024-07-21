@@ -12,6 +12,26 @@ We invite guidance and suggestions in building this platform.
 
 ## Architecture
 
+### Functions
+The following functions will be implemented:
+1. Fucntion to Submit Code
+2. Function to Execute Code
+3. Function to Manage Leaderboard in competitions
+4. Function to Display User Statistic
+5. Function to Authenticate User
+6. Function to Submit Problem
+7. Function to Diplay Problems
+8. Function to Fetch a Problem
+
+### Database
+The database will be used for storing user data, problem statements, submission records, leaderboard statistics etc.
+
+### Execution Environment
+Sandboxing using docker containers for safe execution of user-submitted code. and adding resource limits.
+
+### User interface
+Currently we are building the platform to run on the terminal. Once the terminal version is ready, the future releases will have a cleaner and more usable front end.
+
 ## Setup
 
 ## Features

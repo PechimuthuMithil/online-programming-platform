@@ -35,3 +35,20 @@ I use the SSH service to login into the server terminals from my host machine so
 
 4. Check by running `free -m`
 
+### Install Docker
+This can be chosen to install during the the installation of the soperating system.
+
+### Install Kubernetes
+Like docker microK8s can be installed during the installation of the soperating system, however, I install Kubernetes separately using the following steps.
+
+#### Download and add GPG key
+The GPG key (GNU Privacy Guard key) is used to ensure the integrity and authenticity of the packages you download and install from a repository. 
+`curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg`
+
+#### Add Software Repositories and Install K8s Tools
+Kubernetes is not included in the default repositories. To add them, enter the following:
+`echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list`  
+`sudo at-get update`
+`sudo apt-get install -y kubelet kubeadm kubectl`
+`sudo apt-mark hold kubelet kubeadm kubectl`  
+
