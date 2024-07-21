@@ -42,7 +42,9 @@ This can be chosen to install during the the installation of the soperating syst
 Like docker microK8s can be installed during the installation of the soperating system, however, I install Kubernetes separately using the following steps.
 
 #### Download and add GPG key
-The GPG key (GNU Privacy Guard key) is used to ensure the integrity and authenticity of the packages you download and install from a repository.   
+The GPG key (GNU Privacy Guard key) is used to ensure the integrity and authenticity of the packages you download and install from a repository.  
+`sudo apt-get update`  
+`sudo apt-get install -y apt-transport-https ca-certificates curl gpg`  
 `curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg`
 
 #### Add Software Repositories and Install K8s Tools
