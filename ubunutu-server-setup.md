@@ -48,7 +48,7 @@ The GPG key (GNU Privacy Guard key) is used to ensure the integrity and authenti
 #### Add Software Repositories and Install K8s Tools
 Kubernetes is not included in the default repositories. To add them, enter the following:
 `echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list`  
-`sudo at-get update`  
+`sudo apt-get update`  
 `sudo apt-get install -y kubelet kubeadm kubectl`  
 `sudo apt-mark hold kubelet kubeadm kubectl`    
 `sudo systemctl enable --now kubelet`  
