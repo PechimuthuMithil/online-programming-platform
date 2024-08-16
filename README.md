@@ -13,7 +13,7 @@ We invite guidance and suggestions in building this platform.
 ## Architecture
 
 ### Functions
-The following functions will be implemented:
+following functions will be implemented:
 1. Fucntion to Submit Code
 2. Function to Execute Code
 3. Function to Manage Leaderboard in competitions
