@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func make_submission(filePath string, fileContent string, expectedOutputFile string, id string) (any, int) {
@@ -30,7 +31,6 @@ func make_submission(filePath string, fileContent string, expectedOutputFile str
 	}
 	expectedOutput, err := ioutil.ReadFile(expectedOutputFile)
 	expectedOutputContent := string(expectedOutput)
-	fmt.Println(expectedOutputContent, fileContent)
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
@@ -81,6 +81,50 @@ func make_submission(filePath string, fileContent string, expectedOutputFile str
 	return token, response.StatusCode
 }
 
+func get_submission_status(token string) (string, int) {
+	// Make the GET request
+	response, err := http.Get(
+		fmt.Sprintf("http://localhost:2358/submissions/%s", token),
+	)
+	if err != nil {
+		log.Fatalf("Error making GET request: %v", err)
+	}
+	defer response.Body.Close()
+
+	responseData, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var responseObj map[string]interface{}
+	err = json.Unmarshal(responseData, &responseObj)
+	if err != nil {
+		fmt.Println(err.Error())
+		fmt.Println("Error parsing response")
+		return "", response.StatusCode
+	}
+
+	status, ok := responseObj["status"].(map[string]interface{})
+	if !ok {
+		fmt.Println("Status not found in response")
+		return "", response.StatusCode
+	}
+
+	description, ok := status["description"].(string)
+	if !ok {
+		fmt.Println("Status description not found in response")
+		return "", response.StatusCode
+	}
+
+	// Check if the status is "Internal Error"
+	if description == "Internal Error" {
+		fmt.Println("Internal Error occurred. Response:", string(responseData))
+		return description, response.StatusCode
+	}
+
+	return description, response.StatusCode
+}
+
 func main() {
 	// check if the file is provided
 	if len(os.Args) < 5 {
@@ -93,10 +137,20 @@ func main() {
 	id := os.Args[4]
 	token, statusCode := make_submission(filePath, fileContent, expectedOutputFile, id)
 	if token == 0 {
+		fmt.Println("statusCode:- ", statusCode)
 		fmt.Println("Error in making submission")
 		os.Exit(1)
 	}
+	//sleep for 2 seconds
+	time.Sleep(2 * time.Second)
+	//convert token to string
+	tokenString := fmt.Sprintf("%v", token)
+	status, statusCode := get_submission_status(tokenString)
+	if status == "" {
+		fmt.Println("statusCode:- ", statusCode)
+		fmt.Println("Error in getting submission status")
+		os.Exit(1)
+	}
+	fmt.Println("Status:- ", status)
 
-	fmt.Println(token)
-	fmt.Println(statusCode)
 }
