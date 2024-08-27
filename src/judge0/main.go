@@ -11,21 +11,21 @@ import (
 	"os"
 )
 
-func make_submission(filePath string, fileContent string, expectedOutputFile string, id string) (string, int) {
+func make_submission(filePath string, fileContent string, expectedOutputFile string, id string) (any, int) {
 	//convert id which is a string to int
 	if expectedOutputFile == "" {
-		return "No expected output file provided", 400
+		return 0, 400
 	}
 	if fileContent == "" && filePath == "" {
 		//return err
-		return "No file content or file path provided", 400
+		return 0, 400
 	}
 	if fileContent == "" && filePath != "" {
 		inputFile, err := ioutil.ReadFile(filePath)
 		fileContent = string(inputFile)
 		if err != nil {
 			fmt.Print(err.Error())
-			return "Error reading file", 400
+			return 0, 400
 		}
 	}
 	expectedOutput, err := ioutil.ReadFile(expectedOutputFile)
@@ -60,12 +60,25 @@ func make_submission(filePath string, fileContent string, expectedOutputFile str
 	defer response.Body.Close()
 
 	responseData, err := ioutil.ReadAll(response.Body)
-	fmt.Println(response)
-
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(responseData), response.StatusCode
+
+	var responseObj map[string]interface{}
+	err = json.Unmarshal(responseData, &responseObj)
+	if err != nil {
+		fmt.Println(err.Error())
+		fmt.Println("Error parsing response")
+		return 0, response.StatusCode
+	}
+
+	token, ok := responseObj["token"]
+	if !ok {
+		fmt.Println("Token not found in response or not a number")
+		return 0, response.StatusCode
+	}
+
+	return token, response.StatusCode
 }
 
 func main() {
@@ -78,12 +91,12 @@ func main() {
 	fileContent := os.Args[2]
 	expectedOutputFile := os.Args[3]
 	id := os.Args[4]
-	fmt.Println(filePath)
-	fmt.Println(fileContent)
-	fmt.Println(expectedOutputFile)
-	fmt.Println(id)
+	token, statusCode := make_submission(filePath, fileContent, expectedOutputFile, id)
+	if token == 0 {
+		fmt.Println("Error in making submission")
+		os.Exit(1)
+	}
 
-	response, statusCode := make_submission(filePath, fileContent, expectedOutputFile, id)
-	fmt.Println(response)
+	fmt.Println(token)
 	fmt.Println(statusCode)
 }
